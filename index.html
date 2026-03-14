@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerPulse — Find Your Dream Career</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="#" class="logo" onclick="showPage('home')">Career<span>Pulse</span></a>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-btn active" onclick="showPage('home')" data-page="home">Home</button>
+      <button class="nav-btn" onclick="showPage('companies')" data-page="companies">Companies</button>
+      <button class="nav-btn" onclick="showPage('jobs')" data-page="jobs">Jobs</button>
+      <button class="nav-btn" onclick="showPage('review')" data-page="review">Write Review</button>
+      <button class="nav-btn" onclick="showPage('verify')" data-page="verify">Verification</button>
+    </div>
+    <div class="nav-auth" id="navAuth">
+      <button class="btn-outline" onclick="showModal('loginModal')">Login</button>
+      <button class="btn-primary" onclick="showModal('registerModal')">Sign Up</button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ── HOME PAGE ──────────────────────────────────────── -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🚀 Trusted by 45,000+ professionals</div>
+      <h1>Find your next <span class="gradient-text">dream career.</span></h1>
+      <p>Real reviews from real employees. Search jobs, explore companies, and make informed decisions before you apply.</p>
+      <div class="search-wrap" id="homeSearchWrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" id="homeSearch" placeholder="Search jobs, skills, companies…" oninput="handleSearch(this.value,'homeSuggestions')" onblur="hideSuggestions('homeSuggestions')" autocomplete="off"/>
+        <button class="search-btn" onclick="doSearch()">Search</button>
+        <div class="suggestions-box" id="homeSuggestions"></div>
+      </div>
+      <div class="popular-tags">
+        <span class="tag-label">Popular:</span>
+        <button class="pop-tag" onclick="quickSearch('React Developer')">React Developer</button>
+        <button class="pop-tag" onclick="quickSearch('Data Scientist')">Data Scientist</button>
+        <button class="pop-tag" onclick="quickSearch('Product Manager')">Product Manager</button>
+        <button class="pop-tag" onclick="quickSearch('Internship')">Internship</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-card fc1">
+        <div class="fc-icon">⭐</div>
+        <div><strong>4.8</strong><br/><small>Google Rating</small></div>
+      </div>
+      <div class="floating-card fc2">
+        <div class="fc-icon">✓</div>
+        <div><strong>Verified</strong><br/><small>45K+ Users</small></div>
+      </div>
+      <div class="floating-card fc3">
+        <div class="fc-icon">💼</div>
+        <div><strong>12,400+</strong><br/><small>Live Jobs</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item"><span class="stat-num">12,400+</span><span class="stat-label">Job Listings</span></div>
+        <div class="stat-item"><span class="stat-num">3,200+</span><span class="stat-label">Companies</span></div>
+        <div class="stat-item"><span class="stat-num">87,500+</span><span class="stat-label">Employee Reviews</span></div>
+        <div class="stat-item"><span class="stat-num">45,000+</span><span class="stat-label">Verified Users</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header">
+      <div><h2 class="section-title">Top Companies</h2><p class="section-sub">Explore real employee experiences</p></div>
+      <button class="btn-ghost" onclick="showPage('companies')">View All →</button>
+    </div>
+    <div class="companies-grid" id="homeCompanies"></div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header">
+      <div><h2 class="section-title">Latest Jobs</h2><p class="section-sub">Fresh opportunities across India</p></div>
+      <button class="btn-ghost" onclick="showPage('jobs')">View All →</button>
+    </div>
+    <div class="jobs-list" id="homeJobs"></div>
+  </section>
+</div>
+
+<!-- ── COMPANIES PAGE ─────────────────────────────────── -->
+<div id="page-companies" class="page">
+  <div class="container">
+    <div class="page-header">
+      <h2 class="section-title">Browse Companies</h2>
+      <p class="section-sub">Explore ratings and reviews from real employees</p>
+    </div>
+    <div class="filter-bar">
+      <input type="text" class="search-bar small" id="companySearch" placeholder="Search company…" oninput="filterCompanies(this.value)"/>
+      <select class="select-input" id="industryFilter" onchange="filterCompanies()">
+        <option value="">All Industries</option>
+        <option>IT Services</option>
+        <option>IT Consulting</option>
+        <option>Technology</option>
+        <option>E-Commerce</option>
+        <option>FinTech</option>
+        <option>Healthcare</option>
+      </select>
+      <select class="select-input" id="companySortFilter" onchange="filterCompanies()">
+        <option value="-avgRating">Top Rated</option>
+        <option value="-totalReviews">Most Reviewed</option>
+        <option value="name">A–Z</option>
+      </select>
+    </div>
+    <div class="companies-grid" id="companiesGrid"></div>
+  </div>
+</div>
+
+<!-- ── COMPANY PROFILE PAGE ───────────────────────────── -->
+<div id="page-profile" class="page">
+  <div class="container">
+    <button class="back-btn" onclick="showPage('companies')">← Back to Companies</button>
+    <div id="profileContent"></div>
+  </div>
+</div>
+
+<!-- ── JOBS PAGE ──────────────────────────────────────── -->
+<div id="page-jobs" class="page">
+  <div class="container">
+    <div class="page-header">
+      <h2 class="section-title">Job Listings</h2>
+      <p class="section-sub">Find your next opportunity</p>
+    </div>
+    <div class="filter-bar">
+      <input type="text" class="search-bar small" id="jobSearch" placeholder="Search jobs or skills…" oninput="filterJobs(this.value)"/>
+      <select class="select-input" id="jobTypeFilter" onchange="filterJobs()">
+        <option value="">All Types</option>
+        <option>Full-time</option>
+        <option>Internship</option>
+        <option>Contract</option>
+      </select>
+      <select class="select-input" id="locationFilter" onchange="filterJobs()">
+        <option value="">All Locations</option>
+        <option>Bengaluru</option>
+        <option>Mumbai</option>
+        <option>Hyderabad</option>
+        <option>Pune</option>
+        <option>Remote</option>
+      </select>
+    </div>
+    <div class="jobs-list full" id="jobsGrid"></div>
+  </div>
+</div>
+
+<!-- ── WRITE REVIEW PAGE ──────────────────────────────── -->
+<div id="page-review" class="page">
+  <div class="container narrow">
+    <div class="page-header">
+      <h2 class="section-title">Share Your Experience</h2>
+      <p class="section-sub">Help thousands of job seekers make better career decisions</p>
+    </div>
+    <div class="form-card" id="reviewFormCard">
+      <div id="reviewSuccess" class="success-banner hidden">
+        <div class="success-icon">✓</div>
+        <h3>Review Submitted!</h3>
+        <p>Thank you for sharing your experience. Your review helps thousands of job seekers.</p>
+        <button class="btn-primary" onclick="resetReviewForm()">Write Another Review</button>
+      </div>
+      <form id="reviewForm" onsubmit="submitReview(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Company Name *</label>
+            <input type="text" class="form-input" id="fc_company" placeholder="e.g. Google, TCS, Infosys" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Job Role *</label>
+            <input type="text" class="form-input" id="fc_role" placeholder="e.g. Software Engineer" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Employment Type *</label>
+            <select class="form-input" id="fc_type" required>
+              <option value="">Select type…</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Internship">Internship</option>
+              <option value="Contract">Contract</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Employment Duration</label>
+            <input type="text" class="form-input" id="fc_duration" placeholder="e.g. 2 Years, 6 Months"/>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">Overall Rating *</label>
+            <div class="star-picker" id="starPicker">
+              <span class="star" data-val="1" onclick="setRating(1)">★</span>
+              <span class="star" data-val="2" onclick="setRating(2)">★</span>
+              <span class="star" data-val="3" onclick="setRating(3)">★</span>
+              <span class="star" data-val="4" onclick="setRating(4)">★</span>
+              <span class="star" data-val="5" onclick="setRating(5)">★</span>
+            </div>
+            <input type="hidden" id="fc_rating" value="0"/>
+          </div>
+
+          <div class="form-group full"><label class="form-label">Rating Breakdown</label>
+            <div class="breakdown-inputs">
+              <div class="breakdown-row"><span>Work Culture</span><div class="mini-stars" id="ms_culture" data-field="culture"></div><input type="hidden" id="fc_culture" value="3"/></div>
+              <div class="breakdown-row"><span>Salary & Benefits</span><div class="mini-stars" id="ms_salary" data-field="salary"></div><input type="hidden" id="fc_salary" value="3"/></div>
+              <div class="breakdown-row"><span>Work-Life Balance</span><div class="mini-stars" id="ms_wlb" data-field="wlb"></div><input type="hidden" id="fc_wlb" value="3"/></div>
+              <div class="breakdown-row"><span>Career Growth</span><div class="mini-stars" id="ms_growth" data-field="growth"></div><input type="hidden" id="fc_growth" value="3"/></div>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">Pros — What's great? *</label>
+            <textarea class="form-input" id="fc_pros" rows="3" placeholder="Good learning environment, friendly team, great benefits…" required></textarea>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Cons — What could improve? *</label>
+            <textarea class="form-input" id="fc_cons" rows="3" placeholder="Long working hours, limited growth opportunities…" required></textarea>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Advice to Management</label>
+            <textarea class="form-input" id="fc_advice" rows="2" placeholder="Focus more on employee well-being, improve communication…"></textarea>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Would you recommend this company?</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="recommend" value="yes" checked/> 👍 Yes, I would recommend</label>
+              <label class="radio-label"><input type="radio" name="recommend" value="no"/> 👎 No, I wouldn't recommend</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary full-width">Submit Review</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── VERIFICATION PAGE ──────────────────────────────── -->
+<div id="page-verify" class="page">
+  <div class="container narrow">
+    <div class="page-header">
+      <h2 class="section-title">Account Verification</h2>
+      <p class="section-sub">Verified accounts get a trusted badge on all reviews and applications</p>
+    </div>
+    <div class="verify-cards">
+      <div class="verify-card" id="vc-email">
+        <div class="vc-icon email-icon">📧</div>
+        <div class="vc-body">
+          <h3>Email Verification</h3>
+          <p>A verification link is sent to your registered email. Click it to activate your account.</p>
+          <div class="vc-steps">
+            <span class="step done">1. Register</span>
+            <span class="step-arrow">→</span>
+            <span class="step done">2. Check email</span>
+            <span class="step-arrow">→</span>
+            <span class="step done">3. Click link</span>
+          </div>
+        </div>
+        <span class="verify-badge done">✓ Verified</span>
+      </div>
+
+      <div class="verify-card" id="vc-phone">
+        <div class="vc-icon phone-icon">📱</div>
+        <div class="vc-body">
+          <h3>Phone Verification <span class="optional-tag">Optional</span></h3>
+          <p>Verify your phone number via OTP for extra account security and trust.</p>
+          <div class="phone-form" id="phoneForm">
+            <div class="input-row">
+              <input type="tel" class="form-input" id="phoneInput" placeholder="+91 98765 43210"/>
+              <button class="btn-outline" onclick="sendOTP()">Send OTP</button>
+            </div>
+          </div>
+          <div class="otp-form hidden" id="otpForm">
+            <p class="otp-label">Enter the 6-digit OTP sent to your phone:</p>
+            <div class="otp-inputs" id="otpInputs">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this,0)"/>
+              <input class="otp-box" maxlength="1" oninput="otpNext(this,1)"/>
+              <input class="otp-box" maxlength="1" oninput="otpNext(this,2)"/>
+              <input class="otp-box" maxlength="1" oninput="otpNext(this,3)"/>
+              <input class="otp-box" maxlength="1" oninput="otpNext(this,4)"/>
+              <input class="otp-box" maxlength="1" oninput="otpNext(this,5)"/>
+            </div>
+            <div class="otp-actions">
+              <button class="btn-primary" onclick="verifyOTP()">Verify OTP</button>
+              <button class="btn-ghost" onclick="resendOTP()">Resend OTP</button>
+            </div>
+          </div>
+        </div>
+        <span class="verify-badge pending" id="phoneBadge">Pending</span>
+      </div>
+
+      <div class="verify-card" id="vc-resume">
+        <div class="vc-icon resume-icon">📄</div>
+        <div class="vc-body">
+          <h3>Resume Verification <span class="optional-tag">Optional</span></h3>
+          <p>Upload your resume. Our system checks your education, skills and work experience to verify your profile.</p>
+          <div class="upload-area" id="uploadArea" ondragover="event.preventDefault()" ondrop="handleResumeDrop(event)">
+            <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="handleResumeSelect(this)" style="display:none"/>
+            <button class="btn-outline" onclick="document.getElementById('resumeFile').click()">📎 Upload Resume</button>
+            <p class="upload-hint">PDF, DOC or DOCX — max 5MB. Drag & drop supported.</p>
+          </div>
+          <div class="resume-uploaded hidden" id="resumeUploaded">
+            <span class="file-name" id="resumeFileName"></span>
+            <button class="btn-primary small" onclick="submitResume()">Verify Resume</button>
+          </div>
+        </div>
+        <span class="verify-badge optional" id="resumeBadge">Optional</span>
+      </div>
+    </div>
+
+    <div class="verification-benefits">
+      <h3>Benefits of Verification</h3>
+      <div class="benefits-grid">
+        <div class="benefit-item"><span class="benefit-icon">✓</span><div><strong>Trusted Badge</strong><p>Your reviews and applications show a verified checkmark.</p></div></div>
+        <div class="benefit-item"><span class="benefit-icon">🔝</span><div><strong>Higher Visibility</strong><p>Verified profiles appear higher in employer searches.</p></div></div>
+        <div class="benefit-item"><span class="benefit-icon">🛡️</span><div><strong>Spam Prevention</strong><p>Helps keep fake reviews and applications off the platform.</p></div></div>
+        <div class="benefit-item"><span class="benefit-icon">⚡</span><div><strong>Faster Applications</strong><p>Pre-verified details speed up your job applications.</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ────────────────────────────────────── -->
+<div class="modal-overlay" id="loginModal" onclick="closeModalOutside(event,'loginModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <h2 class="modal-title">Welcome Back</h2>
+    <p class="modal-sub">Log in to CareerPulse</p>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="loginEmail" placeholder="you@email.com" required/></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="loginPassword" placeholder="••••••••" required/></div>
+      <button type="submit" class="btn-primary full-width" style="margin-top:16px">Login</button>
+    </form>
+    <p class="modal-footer">Don't have an account? <button class="link-btn" onclick="closeModal('loginModal');showModal('registerModal')">Sign Up</button></p>
+  </div>
+</div>
+
+<!-- ── REGISTER MODAL ─────────────────────────────────── -->
+<div class="modal-overlay" id="registerModal" onclick="closeModalOutside(event,'registerModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    <h2 class="modal-title">Create Account</h2>
+    <p class="modal-sub">Join 45,000+ professionals on CareerPulse</p>
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="regName" placeholder="Your full name" required/></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="regEmail" placeholder="you@email.com" required/></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="regPassword" placeholder="Min 6 characters" required minlength="6"/></div>
+      <div class="form-group">
+        <label class="form-label">I am a</label>
+        <select class="form-input" id="regRole">
+          <option value="jobseeker">Job Seeker</option>
+          <option value="employer">Employer</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary full-width" style="margin-top:16px">Create Account</button>
+    </form>
+    <p class="modal-footer">Already have an account? <button class="link-btn" onclick="closeModal('registerModal');showModal('loginModal')">Login</button></p>
+  </div>
+</div>
+
+<!-- ── REPORT MODAL ───────────────────────────────────── -->
+<div class="modal-overlay" id="reportModal" onclick="closeModalOutside(event,'reportModal')">
+  <div class="modal small">
+    <button class="modal-close" onclick="closeModal('reportModal')">✕</button>
+    <h2 class="modal-title">Report Review</h2>
+    <p class="modal-sub">Why are you reporting this review?</p>
+    <div class="report-reasons">
+      <label class="radio-label"><input type="radio" name="reportReason" value="fake" checked/> Fake or misleading review</label>
+      <label class="radio-label"><input type="radio" name="reportReason" value="spam"/> Spam or promotional content</label>
+      <label class="radio-label"><input type="radio" name="reportReason" value="offensive"/> Offensive or inappropriate</label>
+      <label class="radio-label"><input type="radio" name="reportReason" value="other"/> Other</label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('reportModal')">Cancel</button>
+      <button class="btn-danger" onclick="confirmReport()">Submit Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ──────────────────────────────────────────── -->
+<div id="toast" class="toast"></div>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom:10px">Career<span>Pulse</span></div>
+        <p style="color:var(--muted);font-size:14px;line-height:1.6">Real reviews from real employees.<br/>Making careers better, one review at a time.</p>
+      </div>
+      <div>
+        <h4>For Job Seekers</h4>
+        <ul><li><a href="#" onclick="showPage('companies')">Browse Companies</a></li><li><a href="#" onclick="showPage('jobs')">Find Jobs</a></li><li><a href="#" onclick="showPage('review')">Write a Review</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#">About Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
+      </div>
+      <div>
+        <h4>API</h4>
+        <ul><li><a href="/api/health" target="_blank">Health Check</a></li><li><a href="/api/companies" target="_blank">Companies API</a></li><li><a href="/api/jobs" target="_blank">Jobs API</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 CareerPulse. Built with Node.js, Express & MongoDB.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
